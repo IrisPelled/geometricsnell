@@ -1,0 +1,1549 @@
+
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לימוד חוק השבירה באופטיקה גיאומטרית</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+        
+        :root {
+            --pink-light: #FFD6EC;
+            --pink-medium: #FF69B4;
+            --pink-dark: #C71585;
+            --yellow-dark: #B8860B;
+            --black: #1A1A1A;
+        }
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #f8f8f8;
+        }
+        
+        .tab-button {
+            background-color: var(--black);
+            color: white;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button:hover {
+            background-color: var(--pink-medium);
+        }
+        
+        .tab-button.active {
+            background-color: var(--pink-dark);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            border: 2px solid var(--pink-dark);
+            border-radius: 0 0 0.5rem 0.5rem;
+            padding: 1.5rem;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            border: 2px solid var(--black);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .slider-container {
+            margin: 1.5rem 0;
+        }
+        
+        .slider-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, var(--pink-dark), var(--yellow-dark));
+            outline: none;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            border: 1px solid var(--black);
+            padding: 0.5rem;
+            text-align: center;
+        }
+        
+        th {
+            background-color: var(--yellow-dark);
+            color: white;
+        }
+        
+        .quiz-option {
+            display: block;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 2px solid var(--black);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background-color: var(--pink-light);
+        }
+        
+        .quiz-option.correct {
+            background-color: #90EE90;
+            border-color: green;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #FFC0CB;
+            border-color: red;
+        }
+        
+        .btn {
+            background-color: var(--yellow-dark);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--pink-dark);
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-2" style="color: var(--pink-dark);">חוק השבירה באופטיקה גיאומטרית</h1>
+            <p class="text-lg text-gray-700">אפליקציה אינטראקטיבית ללימוד חוק סנל</p>
+        </header>
+        
+        <div class="tab-container">
+            <div class="flex flex-wrap">
+                <button class="tab-button active" onclick="openTab(event, 'tab1')">הסבר תיאורטי</button>
+                <button class="tab-button" onclick="openTab(event, 'tab2')">סימולציה בסיסית</button>
+                <button class="tab-button" onclick="openTab(event, 'tab3')">סימולציה מתקדמת</button>
+                <button class="tab-button" onclick="openTab(event, 'tab5')">החזרה גמורה</button>
+                <button class="tab-button" onclick="openTab(event, 'tab4')">חידון</button>
+            </div>
+            
+            <!-- טאב 1: הסבר תיאורטי -->
+            <div id="tab1" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4" style="color: var(--yellow-dark);">חוק השבירה (חוק סנל)</h2>
+                        <p class="mb-4">חוק השבירה, הידוע גם כחוק סנל, מתאר כיצד אור משנה את כיוונו כאשר הוא עובר בין שני תווכים שונים.</p>
+                        <p class="mb-4">הנוסחה המתמטית של חוק סנל היא:</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-center mb-4">
+                            <span class="text-xl font-bold">n₁ · sin(θ₁) = n₂ · sin(θ₂)</span>
+                        </div>
+                        <p class="mb-2">כאשר:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li><strong>n₁</strong> - מקדם השבירה של התווך הראשון</li>
+                            <li><strong>θ₁</strong> - זווית הפגיעה (ביחס לאנך)</li>
+                            <li><strong>n₂</strong> - מקדם השבירה של התווך השני</li>
+                            <li><strong>θ₂</strong> - זווית השבירה (ביחס לאנך)</li>
+                        </ul>
+                        <p class="mb-4">כאשר האור עובר מתווך בעל מקדם שבירה נמוך לתווך בעל מקדם שבירה גבוה יותר, הקרן נשברת לכיוון האנך. לעומת זאת, כאשר האור עובר מתווך בעל מקדם שבירה גבוה לתווך בעל מקדם שבירה נמוך יותר, הקרן נשברת הרחק מהאנך.</p>
+                        
+                        <h3 class="text-xl font-bold mt-6 mb-3" style="color: var(--pink-dark);">מהירות האור ומקדם השבירה</h3>
+                        <p class="mb-3">מקדם השבירה של חומר מוגדר כיחס בין מהירות האור בריק (c) לבין מהירות האור בחומר (v):</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-center mb-4">
+                            <span class="text-xl font-bold">n = c / v</span>
+                        </div>
+                        <p class="mb-4">כלומר, ככל שמקדם השבירה של חומר גבוה יותר, מהירות האור בתוכו נמוכה יותר. למשל, במים (n = 1.33) מהירות האור היא כ-75% ממהירותו בריק, ובזכוכית (n = 1.5) מהירות האור היא כ-67% ממהירותו בריק.</p>
+                    </div>
+                    <div>
+                        <div class="canvas-container">
+                            <canvas id="staticDiagram" width="600" height="300"></canvas>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold mt-6 mb-3" style="color: var(--pink-dark);">החזרה גמורה (Total Internal Reflection)</h3>
+                        <p class="mb-3">החזרה גמורה מתרחשת כאשר אור מנסה לעבור מתווך בעל מקדם שבירה גבוה לתווך בעל מקדם שבירה נמוך יותר, וזווית הפגיעה גדולה מהזווית הקריטית.</p>
+                        <p class="mb-3">הזווית הקריטית (θc) מחושבת לפי הנוסחה:</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-center mb-4">
+                            <span class="text-xl font-bold">θc = arcsin(n₂/n₁)</span>
+                        </div>
+                        <p class="mb-4">כאשר n₁ הוא מקדם השבירה של התווך הראשון (הצפוף יותר) ו-n₂ הוא מקדם השבירה של התווך השני (הפחות צפוף). כאשר זווית הפגיעה גדולה מהזווית הקריטית, כל האור מוחזר בחזרה לתווך הראשון, ואין קרן נשברת.</p>
+                        <p class="mb-4">דוגמה: במעבר מזכוכית (n = 1.5) לאוויר (n = 1.0), הזווית הקריטית היא: θc = arcsin(1.0/1.5) ≈ 41.4°.</p>
+                        
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-lg font-bold mb-2" style="color: var(--pink-dark);">מקדמי שבירה נפוצים:</h3>
+                            <table>
+                                <tr>
+                                    <th>חומר</th>
+                                    <th>מקדם שבירה (n)</th>
+                                </tr>
+                                <tr>
+                                    <td>ריק</td>
+                                    <td>1.0</td>
+                                </tr>
+                                <tr>
+                                    <td>אוויר</td>
+                                    <td>1.0003</td>
+                                </tr>
+                                <tr>
+                                    <td>מים</td>
+                                    <td>1.33</td>
+                                </tr>
+                                <tr>
+                                    <td>זכוכית</td>
+                                    <td>1.5-1.9</td>
+                                </tr>
+                                <tr>
+                                    <td>יהלום</td>
+                                    <td>2.42</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- טאב 2: סימולציה בסיסית -->
+            <div id="tab2" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--yellow-dark);">סימולציה בסיסית - שינוי זווית הפגיעה</h2>
+                <p class="mb-4">בסימולציה זו ניתן לשנות את זווית הפגיעה ולראות כיצד משתנה זווית השבירה. מקדם השבירה של החומר התחתון קבוע (n₂ = 1.5).</p>
+                
+                <div class="canvas-container">
+                    <canvas id="basicSimulation" width="600" height="300"></canvas>
+                </div>
+                
+                <div class="slider-container">
+                    <label for="incidenceAngle">זווית פגיעה (θ₁): <span id="incidenceAngleValue">30°</span></label>
+                    <input type="range" id="incidenceAngle" min="0" max="85" value="30" oninput="updateBasicSimulation(this.value)">
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--pink-dark);">טבלת נתונים</h3>
+                    <div class="overflow-x-auto">
+                        <table id="basicDataTable">
+                            <thead>
+                                <tr>
+                                    <th>זווית פגיעה (θ₁)</th>
+                                    <th>זווית שבירה (θ₂)</th>
+                                    <th>sin(θ₁)</th>
+                                    <th>sin(θ₂)</th>
+                                    <th>n₁·sin(θ₁) / n₂·sin(θ₂)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- הנתונים יתווספו כאן באמצעות JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button class="btn" onclick="addToBasicTable()">הוסף לטבלה</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- טאב 3: סימולציה מתקדמת -->
+            <div id="tab3" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--yellow-dark);">סימולציה מתקדמת - שינוי זווית הפגיעה ומקדם השבירה</h2>
+                <p class="mb-4">בסימולציה זו ניתן לשנות הן את זווית הפגיעה והן את מקדם השבירה של החומר התחתון.</p>
+                
+                <div class="canvas-container">
+                    <canvas id="advancedSimulation" width="600" height="300"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="slider-container">
+                        <label for="advIncidenceAngle">זווית פגיעה (θ₁): <span id="advIncidenceAngleValue">30°</span></label>
+                        <input type="range" id="advIncidenceAngle" min="0" max="85" value="30" oninput="updateAdvancedSimulation()">
+                    </div>
+                    <div class="slider-container">
+                        <label for="refractionIndex">מקדם שבירה (n₂): <span id="refractionIndexValue">1.5</span></label>
+                        <input type="range" id="refractionIndex" min="1.0" max="2.5" step="0.1" value="1.5" oninput="updateAdvancedSimulation()">
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--pink-dark);">טבלת נתונים</h3>
+                    <div class="overflow-x-auto">
+                        <table id="advancedDataTable">
+                            <thead>
+                                <tr>
+                                    <th>זווית פגיעה (θ₁)</th>
+                                    <th>מקדם שבירה (n₂)</th>
+                                    <th>זווית שבירה (θ₂)</th>
+                                    <th>sin(θ₁)</th>
+                                    <th>sin(θ₂)</th>
+                                    <th>n₁·sin(θ₁) / n₂·sin(θ₂)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- הנתונים יתווספו כאן באמצעות JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button class="btn" onclick="addToAdvancedTable()">הוסף לטבלה</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- טאב 5: החזרה גמורה -->
+            <div id="tab5" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4" style="color: var(--yellow-dark);">החזרה גמורה (Total Internal Reflection)</h2>
+                <p class="mb-4">בסימולציה זו ניתן לשנות את מקדמי השבירה של שני התווכים ואת זווית הפגיעה, ולצפות בתופעת ההחזרה הגמורה כאשר זווית הפגיעה גדולה מהזווית הקריטית.</p>
+                
+                <div class="canvas-container">
+                    <canvas id="tirSimulation" width="600" height="300"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="slider-container">
+                        <label for="tirIncidenceAngle">זווית פגיעה (θ₁): <span id="tirIncidenceAngleValue">30°</span></label>
+                        <input type="range" id="tirIncidenceAngle" min="0" max="85" value="30" oninput="updateTIRSimulation()">
+                    </div>
+                    <div class="slider-container">
+                        <label for="upperRefIndex">מקדם שבירה עליון (n₁): <span id="upperRefIndexValue">1.5</span></label>
+                        <input type="range" id="upperRefIndex" min="1.0" max="2.0" step="0.1" value="1.5" oninput="updateTIRSimulation()">
+                    </div>
+                    <div class="slider-container">
+                        <label for="lowerRefIndex">מקדם שבירה תחתון (n₂): <span id="lowerRefIndexValue">1.0</span></label>
+                        <input type="range" id="lowerRefIndex" min="1.0" max="2.0" step="0.1" value="1.0" oninput="updateTIRSimulation()">
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--pink-dark);">הסבר על החזרה גמורה</h3>
+                    <p class="mb-2">החזרה גמורה (Total Internal Reflection) מתרחשת כאשר אור עובר מתווך בעל מקדם שבירה גבוה לתווך בעל מקדם שבירה נמוך יותר, וזווית הפגיעה גדולה מהזווית הקריטית.</p>
+                    <p class="mb-2">הזווית הקריטית מחושבת לפי הנוסחה: <strong>θ<sub>c</sub> = arcsin(n₂/n₁)</strong>, כאשר n₁ הוא מקדם השבירה של התווך הראשון ו-n₂ הוא מקדם השבירה של התווך השני.</p>
+                    <p>כאשר זווית הפגיעה גדולה מהזווית הקריטית, כל האור מוחזר בחזרה לתווך הראשון, ואין קרן נשברת.</p>
+                    
+                    <div class="mt-4 p-3 bg-white rounded-lg border-2 border-pink-300">
+                        <p class="font-bold">מידע על הסימולציה הנוכחית:</p>
+                        <p id="criticalAngleInfo">הזווית הקריטית: <span id="criticalAngleValue">41.4°</span></p>
+                        <p id="currentStateInfo">מצב נוכחי: <span id="currentStateValue">שבירה רגילה</span></p>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--pink-dark);">טבלת נתונים</h3>
+                    <div class="overflow-x-auto">
+                        <table id="tirDataTable">
+                            <thead>
+                                <tr>
+                                    <th>זווית פגיעה (θ₁)</th>
+                                    <th>מקדם שבירה עליון (n₁)</th>
+                                    <th>מקדם שבירה תחתון (n₂)</th>
+                                    <th>זווית קריטית (θ<sub>c</sub>)</th>
+                                    <th>תוצאה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- הנתונים יתווספו כאן באמצעות JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button class="btn" onclick="addToTIRTable()">הוסף לטבלה</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- טאב 4: חידון -->
+            <div id="tab4" class="tab-content">
+                <!-- עמוד פתיחת החידון -->
+                <div id="quiz-start-page">
+                    <h2 class="text-3xl font-bold mb-6 text-center" style="color: var(--yellow-dark);">חידון חוק השבירה</h2>
+                    
+                    <div class="max-w-2xl mx-auto bg-gray-100 p-8 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4" style="color: var(--pink-dark);">הוראות החידון:</h3>
+                        <ul class="list-disc list-inside mb-6 space-y-2">
+                            <li>החידון כולל 10 שאלות על חוק השבירה</li>
+                            <li>לכל שאלה יש 4 תשובות אפשריות</li>
+                            <li>בחר תשובה אחת בלבד לכל שאלה</li>
+                            <li>הזמן נמדד מרגע לחיצה על "התחל חידון"</li>
+                            <li>התוצאות נשמרות אוטומטית בסיום</li>
+                        </ul>
+                        
+                        <div class="mb-6">
+                            <label for="student-name" class="block text-lg font-bold mb-2">שם התלמיד:</label>
+                            <input type="text" id="student-name" class="w-full p-3 border-2 border-gray-300 rounded-lg text-lg" placeholder="הכנס את שמך המלא">
+                        </div>
+                        
+                        <div class="text-center">
+                            <button id="start-quiz-btn" class="btn text-xl px-8 py-4" onclick="startQuiz()">התחל חידון</button>
+                        </div>
+                        
+                        <div id="name-error" class="text-red-500 text-center mt-4 hidden">
+                            אנא הכנס את שמך לפני התחלת החידון
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- החידון עצמו -->
+                <div id="quiz-container" class="hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold" style="color: var(--yellow-dark);">חידון חוק השבירה</h2>
+                        <div class="text-lg font-bold">
+                            תלמיד: <span id="current-student-name" style="color: var(--pink-dark);"></span>
+                        </div>
+                    </div>
+                    
+                    <div id="question-container" class="bg-gray-100 p-6 rounded-lg mb-4">
+                        <h3 id="question-text" class="text-xl font-bold mb-4">שאלה 1: טוען שאלות...</h3>
+                        <div id="options-container">
+                            <!-- האפשרויות יתווספו כאן באמצעות JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div id="feedback-container" class="p-4 rounded-lg mb-4 hidden">
+                        <p id="feedback-text" class="text-lg"></p>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span id="question-counter" class="text-lg font-bold">שאלה 1 מתוך 10</span>
+                        <div class="flex items-center space-x-4">
+                            <span id="quiz-timer" class="text-lg font-bold" style="color: var(--pink-dark);">זמן: 00:00</span>
+                            <button id="next-question" class="btn" onclick="nextQuestion()">לשאלה הבאה</button>
+                        </div>
+                    </div>
+                    
+                    <div id="quiz-results" class="mt-8 text-center hidden">
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--pink-dark);">סיימת את החידון!</h3>
+                        <p class="text-xl mb-2">הציון שלך: <span id="quiz-score">0</span>/10</p>
+                        <p class="text-lg mb-4">זמן כולל: <span id="final-time">00:00</span></p>
+                        <div id="saving-status" class="text-lg mb-4" style="color: var(--yellow-dark);">שומר תוצאות...</div>
+                        <button class="btn" onclick="restartQuiz()">התחל מחדש</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // משתנים גלובליים
+        let n1 = 1.0; // מקדם שבירה של האוויר
+        let n2 = 1.5; // מקדם שבירה של החומר השני (ברירת מחדל)
+        let incidenceAngle = 30; // זווית פגיעה (ברירת מחדל)
+        let quizQuestions = [];
+        let currentQuestion = 0;
+        let score = 0;
+        
+        // משתנים לחידון עם Google Sheets
+        let studentName = '';
+        let quizStartTime = null;
+        let timerInterval = null;
+        
+        // Google Apps Script Web App - החלף את ה-URL למטה
+        // 1. צור Google Apps Script חדש ב-https://script.google.com
+        // 2. פרסם אותו כ-Web App עם הרשאות "Anyone"
+        // 3. החלף את ה-URL למטה עם ה-Web App URL שלך
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz94VtH0YNa-DHJe8oBXZ8bFfyXJlkDWBNXpSjzCD9ZpE03qLjW7dviRDalvt1vMBjb/exec';
+        
+        // משתנים לטאב החזרה גמורה
+        let tirN1 = 1.5; // מקדם שבירה של התווך העליון
+        let tirN2 = 1.0; // מקדם שבירה של התווך התחתון
+        let tirIncidenceAngle = 30; // זווית פגיעה
+        
+        // פונקציה לפתיחת טאב
+        function openTab(evt, tabId) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            
+            const tabButtons = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+            
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+            
+            // אתחול הטאב הנבחר
+            if (tabId === "tab1") {
+                drawStaticDiagram();
+            } else if (tabId === "tab2") {
+                updateBasicSimulation(incidenceAngle);
+            } else if (tabId === "tab3") {
+                updateAdvancedSimulation();
+            } else if (tabId === "tab4") {
+                // אל תתחיל את החידון אוטומטית - הצג את עמוד הפתיחה
+                document.getElementById("quiz-start-page").classList.remove("hidden");
+                document.getElementById("quiz-container").classList.add("hidden");
+                document.getElementById("quiz-results").classList.add("hidden");
+            } else if (tabId === "tab5") {
+                updateTIRSimulation();
+            }
+        }
+        
+        // פונקציה לציור חץ
+        function drawArrow(ctx, fromX, fromY, toX, toY, color, arrowSize = 10) {
+            // חישוב נקודת האמצע של הקו
+            const midX = (fromX + toX) / 2;
+            const midY = (fromY + toY) / 2;
+            
+            // חישוב הזווית של הקו
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            
+            // ציור הקו
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // ציור ראש החץ באמצע הקו
+            ctx.beginPath();
+            ctx.moveTo(midX, midY);
+            ctx.lineTo(
+                midX - arrowSize * Math.cos(angle - Math.PI / 6),
+                midY - arrowSize * Math.sin(angle - Math.PI / 6)
+            );
+            ctx.lineTo(
+                midX - arrowSize * Math.cos(angle + Math.PI / 6),
+                midY - arrowSize * Math.sin(angle + Math.PI / 6)
+            );
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+        
+        // פונקציה לציור התרשים הסטטי בטאב הראשון
+        function drawStaticDiagram() {
+            const canvas = document.getElementById("staticDiagram");
+            const ctx = canvas.getContext("2d");
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // נקה את הקנבס
+            ctx.clearRect(0, 0, width, height);
+            
+            // צייר את שני החומרים
+            ctx.fillStyle = "#FFFFFF"; // לבן עבור החומר העליון
+            ctx.fillRect(0, 0, width, height / 2);
+            
+            ctx.fillStyle = "#FFD6EC"; // ורוד בהיר עבור החומר התחתון
+            ctx.fillRect(0, height / 2, width, height / 2);
+            
+            // צייר את קו ההפרדה
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // צייר את האנך
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.strokeStyle = "#C71585"; // ורוד כהה
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // צייר את הקרן הפוגעת
+            const angle1 = 30 * Math.PI / 180; // זווית של 30 מעלות
+            
+            // מיקום התחלתי של הקרן הפוגעת - מחושב ביחס לאנך
+            const rayLength = 150;
+            const startX = width / 2 - rayLength * Math.sin(angle1);
+            const startY = height / 2 - rayLength * Math.cos(angle1);
+            
+            // צייר את הקרן הפוגעת עם חץ
+            drawArrow(ctx, startX, startY, width / 2, height / 2, "#B8860B");
+            
+            // חשב את זווית השבירה לפי חוק סנל
+            const angle2 = Math.asin((n1 / n2) * Math.sin(angle1));
+            
+            // מיקום סופי של הקרן הנשברת - מחושב ביחס לאנך
+            const endX = width / 2 + rayLength * Math.sin(angle2);
+            const endY = height / 2 + rayLength * Math.cos(angle2);
+            
+            // צייר את הקרן הנשברת עם חץ
+            drawArrow(ctx, width / 2, height / 2, endX, endY, "#FF69B4");
+            
+            // סימון זוויות בצורה ברורה יותר
+            const arcRadius = 40;
+            
+            // זווית פגיעה - קשת מהאנך אל הקרן הפוגעת
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, arcRadius, -Math.PI / 2, -Math.PI / 2 - angle1, true);
+            ctx.strokeStyle = "#B8860B";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // קווי עזר לזווית הפגיעה
+            ctx.beginPath();
+            ctx.moveTo(width / 2, height / 2);
+            ctx.lineTo(width / 2, height / 2 - arcRadius - 10);
+            ctx.strokeStyle = "#B8860B";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // זווית שבירה - קשת מהאנך אל הקרן השבורה
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, arcRadius, Math.PI / 2, Math.PI / 2 - angle2, true);
+            ctx.strokeStyle = "#FF69B4";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // קווי עזר לזווית השבירה
+            ctx.beginPath();
+            ctx.moveTo(width / 2, height / 2);
+            ctx.lineTo(width / 2, height / 2 + arcRadius + 10);
+            ctx.strokeStyle = "#FF69B4";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // הוספת טקסט
+            ctx.font = "16px Rubik";
+            ctx.fillStyle = "#000000";
+            ctx.textAlign = "center";
+            
+            // טקסט לזווית הפגיעה
+            ctx.fillStyle = "#B8860B";
+            ctx.fillText("θ₁ = 30°", width / 2 - 60, height / 2 - 60);
+            
+            // טקסט לזווית השבירה
+            const angle2Deg = Math.round(angle2 * 180 / Math.PI);
+            ctx.fillStyle = "#FF69B4";
+            ctx.fillText("θ₂ = " + angle2Deg + "°", width / 2 + 60, height / 2 + 80);
+            
+            // טקסט למקדמי השבירה
+            ctx.fillStyle = "#000000";
+            ctx.fillText("n₁ = 1.0 (אוויר)", width / 4, height / 4);
+            ctx.fillText("n₂ = 1.5 (זכוכית)", width * 3 / 4, height * 3 / 4);
+            
+            // טקסט לאנך
+            ctx.fillText("אנך", width / 2 + 20, height / 4);
+        }
+        
+        // פונקציה לעדכון הסימולציה הבסיסית
+        function updateBasicSimulation(angle) {
+            incidenceAngle = parseInt(angle);
+            document.getElementById("incidenceAngleValue").textContent = incidenceAngle + "°";
+            
+            const canvas = document.getElementById("basicSimulation");
+            const ctx = canvas.getContext("2d");
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // נקה את הקנבס
+            ctx.clearRect(0, 0, width, height);
+            
+            // צייר את שני החומרים
+            ctx.fillStyle = "#FFFFFF"; // לבן עבור החומר העליון
+            ctx.fillRect(0, 0, width, height / 2);
+            
+            ctx.fillStyle = "#FFD6EC"; // ורוד בהיר עבור החומר התחתון
+            ctx.fillRect(0, height / 2, width, height / 2);
+            
+            // צייר את קו ההפרדה
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // צייר את האנך
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.strokeStyle = "#C71585"; // ורוד כהה
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // המר את הזווית לרדיאנים
+            const angle1 = incidenceAngle * Math.PI / 180;
+            
+            // מיקום התחלתי של הקרן הפוגעת - מחושב ביחס לאנך
+            const rayLength = 150;
+            const startX = width / 2 - rayLength * Math.sin(angle1);
+            const startY = height / 2 - rayLength * Math.cos(angle1);
+            
+            // צייר את הקרן הפוגעת עם חץ
+            drawArrow(ctx, startX, startY, width / 2, height / 2, "#B8860B");
+            
+            // חשב את זווית השבירה לפי חוק סנל
+            const angle2 = Math.asin((n1 / n2) * Math.sin(angle1));
+            
+            // מיקום סופי של הקרן הנשברת - מחושב ביחס לאנך
+            const endX = width / 2 + rayLength * Math.sin(angle2);
+            const endY = height / 2 + rayLength * Math.cos(angle2);
+            
+            // צייר את הקרן הנשברת עם חץ
+            drawArrow(ctx, width / 2, height / 2, endX, endY, "#FF69B4");
+            
+            // סימון זוויות בצורה ברורה יותר
+            const arcRadius = 40;
+            
+            // זווית פגיעה - קשת מהאנך אל הקרן הפוגעת
+            if (incidenceAngle > 0) {
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, -Math.PI / 2, -Math.PI / 2 - angle1, true);
+                ctx.strokeStyle = "#B8860B";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית הפגיעה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 - arcRadius - 10);
+                ctx.strokeStyle = "#B8860B";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // זווית שבירה - קשת מהאנך אל הקרן השבורה
+            if (incidenceAngle > 0) {
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, Math.PI / 2, Math.PI / 2 - angle2, true);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית השבירה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 + arcRadius + 10);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // הוספת טקסט
+            ctx.font = "16px Rubik";
+            ctx.fillStyle = "#000000";
+            ctx.textAlign = "center";
+            
+            // טקסט לזווית הפגיעה
+            ctx.fillStyle = "#B8860B";
+            ctx.fillText("θ₁ = " + incidenceAngle + "°", width / 2 - 60, height / 2 - 60);
+            
+            // טקסט לזווית השבירה
+            const angle2Deg = Math.round(angle2 * 180 / Math.PI);
+            ctx.fillStyle = "#FF69B4";
+            ctx.fillText("θ₂ = " + angle2Deg + "°", width / 2 + 60, height / 2 + 80);
+            
+            // טקסט למקדמי השבירה
+            ctx.fillText("n₁ = 1.0 (אוויר)", width / 4, height / 4);
+            ctx.fillText("n₂ = 1.5 (זכוכית)", width * 3 / 4, height * 3 / 4);
+        }
+        
+        // פונקציה להוספת נתונים לטבלה הבסיסית
+        function addToBasicTable() {
+            const angle1 = incidenceAngle;
+            const angle1Rad = angle1 * Math.PI / 180;
+            const sin1 = Math.sin(angle1Rad);
+            
+            const angle2Rad = Math.asin((n1 / n2) * sin1);
+            const angle2 = Math.round(angle2Rad * 180 / Math.PI);
+            const sin2 = Math.sin(angle2Rad);
+            
+            const ratio = (n1 * sin1) / (n2 * sin2);
+            
+            const table = document.getElementById("basicDataTable").getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            
+            row.insertCell(0).textContent = angle1 + "°";
+            row.insertCell(1).textContent = angle2 + "°";
+            row.insertCell(2).textContent = sin1.toFixed(4);
+            row.insertCell(3).textContent = sin2.toFixed(4);
+            row.insertCell(4).textContent = ratio.toFixed(4);
+        }
+        
+        // פונקציה לעדכון הסימולציה המתקדמת
+        function updateAdvancedSimulation() {
+            const angle = document.getElementById("advIncidenceAngle").value;
+            incidenceAngle = parseInt(angle);
+            document.getElementById("advIncidenceAngleValue").textContent = incidenceAngle + "°";
+            
+            const refIndex = document.getElementById("refractionIndex").value;
+            n2 = parseFloat(refIndex);
+            document.getElementById("refractionIndexValue").textContent = n2.toFixed(1);
+            
+            const canvas = document.getElementById("advancedSimulation");
+            const ctx = canvas.getContext("2d");
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // נקה את הקנבס
+            ctx.clearRect(0, 0, width, height);
+            
+            // צייר את שני החומרים
+            ctx.fillStyle = "#FFFFFF"; // לבן עבור החומר העליון
+            ctx.fillRect(0, 0, width, height / 2);
+            
+            ctx.fillStyle = "#FFD6EC"; // ורוד בהיר עבור החומר התחתון
+            ctx.fillRect(0, height / 2, width, height / 2);
+            
+            // צייר את קו ההפרדה
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // צייר את האנך
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.strokeStyle = "#C71585"; // ורוד כהה
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // המר את הזווית לרדיאנים
+            const angle1 = incidenceAngle * Math.PI / 180;
+            
+            // מיקום התחלתי של הקרן הפוגעת - מחושב ביחס לאנך
+            const rayLength = 150;
+            const startX = width / 2 - rayLength * Math.sin(angle1);
+            const startY = height / 2 - rayLength * Math.cos(angle1);
+            
+            // צייר את הקרן הפוגעת עם חץ
+            drawArrow(ctx, startX, startY, width / 2, height / 2, "#B8860B");
+            
+            // בדוק אם יש החזרה פנימית מלאה
+            const sinAngle2 = (n1 / n2) * Math.sin(angle1);
+            let angle2;
+            let totalInternalReflection = false;
+            
+            if (Math.abs(sinAngle2) > 1) {
+                // החזרה פנימית מלאה
+                angle2 = Math.PI - angle1;
+                totalInternalReflection = true;
+            } else {
+                // שבירה רגילה
+                angle2 = Math.asin(sinAngle2);
+            }
+            
+            if (totalInternalReflection) {
+                // קרן מוחזרת - מחושבת ביחס לאנך
+                const reflectedX = width / 2 - rayLength * Math.sin(Math.PI - angle1);
+                const reflectedY = height / 2 - rayLength * Math.cos(Math.PI - angle1);
+                drawArrow(ctx, width / 2, height / 2, reflectedX, reflectedY, "#FF0000");
+            } else {
+                // קרן נשברת - מחושבת ביחס לאנך
+                const refractedX = width / 2 + rayLength * Math.sin(angle2);
+                const refractedY = height / 2 + rayLength * Math.cos(angle2);
+                drawArrow(ctx, width / 2, height / 2, refractedX, refractedY, "#FF69B4");
+            }
+            
+            // סימון זוויות בצורה ברורה יותר
+            const arcRadius = 40;
+            
+            // זווית פגיעה - קשת מהאנך אל הקרן הפוגעת
+            if (incidenceAngle > 0) {
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, -Math.PI / 2, -Math.PI / 2 - angle1, true);
+                ctx.strokeStyle = "#B8860B";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית הפגיעה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 - arcRadius - 10);
+                ctx.strokeStyle = "#B8860B";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            if (!totalInternalReflection && incidenceAngle > 0) {
+                // זווית שבירה - קשת מהאנך אל הקרן השבורה
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, Math.PI / 2, Math.PI / 2 - angle2, true);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית השבירה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 + arcRadius + 10);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // הוספת טקסט
+            ctx.font = "16px Rubik";
+            ctx.fillStyle = "#000000";
+            ctx.textAlign = "center";
+            
+            // טקסט לזווית הפגיעה
+            ctx.fillStyle = "#B8860B";
+            ctx.fillText("θ₁ = " + incidenceAngle + "°", width / 2 - 60, height / 2 - 60);
+            
+            // טקסט לזווית השבירה או החזרה
+            if (totalInternalReflection) {
+                ctx.fillStyle = "#FF0000";
+                ctx.fillText("החזרה פנימית מלאה", width / 2, height / 2 - 70);
+            } else {
+                const angle2Deg = Math.round(angle2 * 180 / Math.PI);
+                ctx.fillStyle = "#FF69B4";
+                ctx.fillText("θ₂ = " + angle2Deg + "°", width / 2 + 60, height / 2 + 80);
+            }
+            
+            // טקסט למקדמי השבירה
+            ctx.fillText("n₁ = 1.0 (אוויר)", width / 4, height / 4);
+            ctx.fillText("n₂ = " + n2.toFixed(1), width * 3 / 4, height * 3 / 4);
+        }
+        
+        // פונקציה להוספת נתונים לטבלה המתקדמת
+        function addToAdvancedTable() {
+            const angle1 = incidenceAngle;
+            const angle1Rad = angle1 * Math.PI / 180;
+            const sin1 = Math.sin(angle1Rad);
+            
+            // בדוק אם יש החזרה פנימית מלאה
+            const sinAngle2 = (n1 / n2) * sin1;
+            let angle2, sin2, ratio;
+            
+            if (Math.abs(sinAngle2) > 1) {
+                // החזרה פנימית מלאה
+                angle2 = "TIR";
+                sin2 = "-";
+                ratio = "-";
+            } else {
+                // שבירה רגילה
+                const angle2Rad = Math.asin(sinAngle2);
+                angle2 = Math.round(angle2Rad * 180 / Math.PI) + "°";
+                sin2 = Math.sin(angle2Rad).toFixed(4);
+                ratio = ((n1 * sin1) / (n2 * Math.sin(angle2Rad))).toFixed(4);
+            }
+            
+            const table = document.getElementById("advancedDataTable").getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            
+            row.insertCell(0).textContent = angle1 + "°";
+            row.insertCell(1).textContent = n2.toFixed(1);
+            row.insertCell(2).textContent = angle2;
+            row.insertCell(3).textContent = sin1.toFixed(4);
+            row.insertCell(4).textContent = sin2;
+            row.insertCell(5).textContent = ratio;
+        }
+        
+        // פונקציה לעדכון סימולציית החזרה גמורה
+        function updateTIRSimulation() {
+            // קבל את הערכים מהסליידרים
+            const angle = document.getElementById("tirIncidenceAngle").value;
+            tirIncidenceAngle = parseInt(angle);
+            document.getElementById("tirIncidenceAngleValue").textContent = tirIncidenceAngle + "°";
+            
+            const upperIndex = document.getElementById("upperRefIndex").value;
+            tirN1 = parseFloat(upperIndex);
+            document.getElementById("upperRefIndexValue").textContent = tirN1.toFixed(1);
+            
+            const lowerIndex = document.getElementById("lowerRefIndex").value;
+            tirN2 = parseFloat(lowerIndex);
+            document.getElementById("lowerRefIndexValue").textContent = tirN2.toFixed(1);
+            
+            // חישוב הזווית הקריטית (אם רלוונטי)
+            let criticalAngle = null;
+            let hasCriticalAngle = false;
+            
+            if (tirN1 > tirN2) {
+                // יש זווית קריטית רק כאשר האור עובר מתווך בעל מקדם שבירה גבוה לתווך בעל מקדם שבירה נמוך
+                criticalAngle = Math.asin(tirN2 / tirN1) * 180 / Math.PI;
+                hasCriticalAngle = true;
+            }
+            
+            // עדכון מידע על הזווית הקריטית
+            if (hasCriticalAngle) {
+                document.getElementById("criticalAngleValue").textContent = criticalAngle.toFixed(1) + "°";
+            } else {
+                document.getElementById("criticalAngleValue").textContent = "לא קיימת (n₁ ≤ n₂)";
+            }
+            
+            // בדיקה אם מתרחשת החזרה גמורה
+            let isTIR = false;
+            if (hasCriticalAngle && tirIncidenceAngle > criticalAngle) {
+                isTIR = true;
+                document.getElementById("currentStateValue").textContent = "החזרה גמורה";
+                document.getElementById("currentStateValue").style.color = "#FF0000";
+            } else {
+                document.getElementById("currentStateValue").textContent = "שבירה רגילה";
+                document.getElementById("currentStateValue").style.color = "#000000";
+            }
+            
+            // ציור הסימולציה
+            const canvas = document.getElementById("tirSimulation");
+            const ctx = canvas.getContext("2d");
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // נקה את הקנבס
+            ctx.clearRect(0, 0, width, height);
+            
+            // צייר את שני החומרים
+            // צבע התווך העליון משתנה לפי מקדם השבירה
+            const upperColor = `rgba(200, ${Math.max(100, 255 - tirN1 * 80)}, ${Math.max(100, 255 - tirN1 * 80)}, 0.3)`;
+            ctx.fillStyle = upperColor;
+            ctx.fillRect(0, 0, width, height / 2);
+            
+            // צבע התווך התחתון משתנה לפי מקדם השבירה
+            const lowerColor = `rgba(200, ${Math.max(100, 255 - tirN2 * 80)}, ${Math.max(100, 255 - tirN2 * 80)}, 0.3)`;
+            ctx.fillStyle = lowerColor;
+            ctx.fillRect(0, height / 2, width, height / 2);
+            
+            // צייר את קו ההפרדה
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // צייר את האנך
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.strokeStyle = "#C71585"; // ורוד כהה
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // המר את הזווית לרדיאנים
+            const angle1 = tirIncidenceAngle * Math.PI / 180;
+            
+            // מיקום התחלתי של הקרן הפוגעת - מחושב ביחס לאנך
+            const rayLength = 150;
+            const startX = width / 2 - rayLength * Math.sin(angle1);
+            const startY = height / 2 - rayLength * Math.cos(angle1);
+            
+            // צייר את הקרן הפוגעת עם חץ
+            drawArrow(ctx, startX, startY, width / 2, height / 2, "#B8860B");
+            
+            if (isTIR) {
+                // החזרה גמורה - צייר קרן מוחזרת בצד השני של האנך באותה זווית
+                // הקרן המוחזרת נשארת בתווך העליון (מעל קו ההפרדה)
+                const reflectedAngle = angle1; // זווית ההחזרה שווה לזווית הפגיעה
+                const reflectedX = width / 2 + rayLength * Math.sin(reflectedAngle);
+                const reflectedY = height / 2 - rayLength * Math.cos(reflectedAngle);
+                
+                // צייר את הקרן המוחזרת עם חץ
+                drawArrow(ctx, width / 2, height / 2, reflectedX, reflectedY, "#FF69B4"); // ורוד בהיר
+            } else {
+                // שבירה רגילה - חשב את זווית השבירה לפי חוק סנל
+                const angle2 = Math.asin((tirN1 / tirN2) * Math.sin(angle1));
+                
+                // מיקום סופי של הקרן הנשברת - מחושב ביחס לאנך
+                const refractedX = width / 2 + rayLength * Math.sin(angle2);
+                const refractedY = height / 2 + rayLength * Math.cos(angle2);
+                
+                // צייר את הקרן הנשברת עם חץ
+                drawArrow(ctx, width / 2, height / 2, refractedX, refractedY, "#FF69B4");
+            }
+            
+            // סימון זוויות בצורה ברורה יותר
+            const arcRadius = 40;
+            
+            // זווית פגיעה - קשת מהאנך אל הקרן הפוגעת
+            if (tirIncidenceAngle > 0) {
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, -Math.PI / 2, -Math.PI / 2 - angle1, true);
+                ctx.strokeStyle = "#B8860B";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית הפגיעה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 - arcRadius - 10);
+                ctx.strokeStyle = "#B8860B";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            if (!isTIR && tirIncidenceAngle > 0) {
+                // זווית שבירה - קשת מהאנך אל הקרן השבורה
+                const angle2 = Math.asin((tirN1 / tirN2) * Math.sin(angle1));
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, Math.PI / 2, Math.PI / 2 - angle2, true);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית השבירה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 + arcRadius + 10);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            } else if (isTIR && tirIncidenceAngle > 0) {
+                // זווית החזרה - קשת מהאנך אל הקרן המוחזרת (עם כיוון השעון)
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, arcRadius, -Math.PI / 2, -Math.PI / 2 + angle1, false);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // קווי עזר לזווית ההחזרה
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2, height / 2 - arcRadius - 10);
+                ctx.strokeStyle = "#FF69B4";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // הוספת טקסט
+            ctx.font = "16px Rubik";
+            ctx.fillStyle = "#000000";
+            ctx.textAlign = "center";
+            
+            // טקסט לזווית הפגיעה
+            ctx.fillStyle = "#B8860B";
+            ctx.fillText("θ₁ = " + tirIncidenceAngle + "°", width / 2 - 60, height / 2 - 60);
+            
+            // טקסט לזווית השבירה או החזרה
+            if (isTIR) {
+                ctx.fillStyle = "#FF0000";
+                ctx.fillText("החזרה גמורה", width / 2, height / 2 - 90);
+                ctx.fillStyle = "#FF69B4";
+                ctx.fillText("θ₁ = θ₂ = " + tirIncidenceAngle + "°", width / 2 + 60, height / 2 - 60);
+            } else {
+                const angle2 = Math.asin((tirN1 / tirN2) * Math.sin(angle1));
+                const angle2Deg = Math.round(angle2 * 180 / Math.PI);
+                ctx.fillStyle = "#FF69B4";
+                ctx.fillText("θ₂ = " + angle2Deg + "°", width / 2 + 60, height / 2 + 80);
+            }
+            
+            // טקסט למקדמי השבירה
+            ctx.fillText("n₁ = " + tirN1.toFixed(1), width / 4, height / 4);
+            ctx.fillText("n₂ = " + tirN2.toFixed(1), width * 3 / 4, height * 3 / 4);
+            
+            // אם יש זווית קריטית, הצג אותה
+            if (hasCriticalAngle) {
+                ctx.fillStyle = "#FF0000";
+                ctx.fillText("זווית קריטית: " + criticalAngle.toFixed(1) + "°", width / 2, height - 20);
+            }
+        }
+        
+        // פונקציה להוספת נתונים לטבלת החזרה גמורה
+        function addToTIRTable() {
+            // חישוב הזווית הקריטית (אם רלוונטי)
+            let criticalAngle = null;
+            let hasCriticalAngle = false;
+            
+            if (tirN1 > tirN2) {
+                // יש זווית קריטית רק כאשר האור עובר מתווך בעל מקדם שבירה גבוה לתווך בעל מקדם שבירה נמוך
+                criticalAngle = Math.asin(tirN2 / tirN1) * 180 / Math.PI;
+                hasCriticalAngle = true;
+            }
+            
+            // בדיקה אם מתרחשת החזרה גמורה
+            let isTIR = false;
+            if (hasCriticalAngle && tirIncidenceAngle > criticalAngle) {
+                isTIR = true;
+            }
+            
+            const table = document.getElementById("tirDataTable").getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            
+            row.insertCell(0).textContent = tirIncidenceAngle + "°";
+            row.insertCell(1).textContent = tirN1.toFixed(1);
+            row.insertCell(2).textContent = tirN2.toFixed(1);
+            
+            if (hasCriticalAngle) {
+                row.insertCell(3).textContent = criticalAngle.toFixed(1) + "°";
+            } else {
+                row.insertCell(3).textContent = "לא קיימת";
+            }
+            
+            if (isTIR) {
+                row.insertCell(4).textContent = "החזרה גמורה";
+                row.cells[4].style.color = "#FF0000";
+            } else {
+                const angle1Rad = tirIncidenceAngle * Math.PI / 180;
+                const angle2Rad = Math.asin((tirN1 / tirN2) * Math.sin(angle1Rad));
+                const angle2Deg = Math.round(angle2Rad * 180 / Math.PI);
+                row.insertCell(4).textContent = "שבירה רגילה (θ₂ = " + angle2Deg + "°)";
+            }
+        }
+        
+        // פונקציות לחידון
+        
+        // פונקציה להתחלת החידון
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name');
+            const nameError = document.getElementById('name-error');
+            
+            studentName = nameInput.value.trim();
+            
+            if (studentName === '') {
+                nameError.classList.remove('hidden');
+                return;
+            }
+            
+            nameError.classList.add('hidden');
+            
+            // הסתר את עמוד הפתיחה והצג את החידון
+            document.getElementById('quiz-start-page').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            
+            // הצג את שם התלמיד
+            document.getElementById('current-student-name').textContent = studentName;
+            
+            // התחל את מדידת הזמן
+            quizStartTime = new Date();
+            startTimer();
+            
+            // אתחל את החידון
+            initQuiz();
+        }
+        
+        // פונקציה למדידת זמן
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const currentTime = new Date();
+                const elapsedSeconds = Math.floor((currentTime - quizStartTime) / 1000);
+                const minutes = Math.floor(elapsedSeconds / 60);
+                const seconds = elapsedSeconds % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('quiz-timer').textContent = `זמן: ${timeString}`;
+            }, 1000);
+        }
+        
+        // פונקציה לעצירת הטיימר
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+        }
+        
+        // פונקציה לחישוב הזמן הכולל
+        function getTotalTime() {
+            if (!quizStartTime) return 0;
+            const endTime = new Date();
+            return Math.floor((endTime - quizStartTime) / 1000);
+        }
+        
+        // פונקציה לשליחת נתונים ל-Google Apps Script
+        async function saveToAppsScript(studentName, score, totalTime) {
+            const now = new Date();
+            const dateString = now.toLocaleDateString('he-IL');
+            const timeString = now.toLocaleTimeString('he-IL');
+            const timeFormatted = `${Math.floor(totalTime / 60)}:${(totalTime % 60).toString().padStart(2, '0')}`;
+            
+            // בדוק אם ה-URL מוגדר
+            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE') {
+                document.getElementById('saving-status').textContent = 'שגיאה: לא מוגדר Web App URL';
+                document.getElementById('saving-status').style.color = 'red';
+                return;
+            }
+            
+            // בנה URL עם parameters לבקשת GET
+            const params = new URLSearchParams({
+                studentName: studentName,
+                date: dateString,
+                time: timeString,
+                score: score,
+                scoreText: `${score}/10`,
+                totalTime: totalTime,
+                timeFormatted: timeFormatted
+            });
+            
+            const urlWithParams = `${APPS_SCRIPT_URL}?${params.toString()}`;
+            
+            // Debug: הדפס את הURL לקונסול
+            console.log('Sending data to:', urlWithParams);
+            console.log('Data being sent:', {
+                studentName: studentName,
+                date: dateString,
+                time: timeString,
+                score: score,
+                scoreText: `${score}/10`,
+                totalTime: totalTime,
+                timeFormatted: timeFormatted
+            });
+            
+            try {
+                // השתמש ב-script tag כדי לעקוף CORS
+                await saveWithScriptTag(urlWithParams);
+                
+                document.getElementById('saving-status').textContent = 'התוצאות נשמרו בהצלחה!';
+                document.getElementById('saving-status').style.color = 'green';
+            } catch (error) {
+                console.error('Error sending to Apps Script:', error);
+                document.getElementById('saving-status').textContent = 'שגיאה בשמירת התוצאות';
+                document.getElementById('saving-status').style.color = 'red';
+            }
+        }
+        
+        // פונקציה לשליחה באמצעות script tag (עוקף CORS)
+        function saveWithScriptTag(url) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+                
+                // timeout לאחר 10 שניות
+                const timeout = setTimeout(() => {
+                    document.head.removeChild(script);
+                    reject(new Error('Timeout'));
+                }, 10000);
+                
+                script.onload = () => {
+                    clearTimeout(timeout);
+                    document.head.removeChild(script);
+                    resolve();
+                };
+                
+                script.onerror = () => {
+                    clearTimeout(timeout);
+                    document.head.removeChild(script);
+                    reject(new Error('Script load error'));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+        
+
+        
+        function initQuiz() {
+            // יצירת שאלות החידון
+            quizQuestions = [
+                {
+                    question: "מהו חוק סנל?",
+                    options: [
+                        "חוק המתאר את התפשטות האור בריק",
+                        "חוק המתאר את שבירת האור במעבר בין שני תווכים",
+                        "חוק המתאר את החזרת האור ממשטח",
+                        "חוק המתאר את התאבכות גלי אור"
+                    ],
+                    correctAnswer: 1
+                },
+                {
+                    question: "מהי הנוסחה המתמטית של חוק סנל?",
+                    options: [
+                        "n₁ · cos(θ₁) = n₂ · cos(θ₂)",
+                        "n₁ · θ₁ = n₂ · θ₂",
+                        "n₁ · sin(θ₁) = n₂ · sin(θ₂)",
+                        "n₁ / sin(θ₁) = n₂ / sin(θ₂)"
+                    ],
+                    correctAnswer: 2
+                },
+                {
+                    question: "כאשר אור עובר מתווך בעל מקדם שבירה נמוך לתווך בעל מקדם שבירה גבוה יותר, הקרן:",
+                    options: [
+                        "נשברת לכיוון האנך",
+                        "נשברת הרחק מהאנך",
+                        "ממשיכה בקו ישר",
+                        "מוחזרת במלואה"
+                    ],
+                    correctAnswer: 0
+                },
+                {
+                    question: "מהו מקדם השבירה של הריק?",
+                    options: [
+                        "0",
+                        "1",
+                        "1.33",
+                        "אינסוף"
+                    ],
+                    correctAnswer: 1
+                },
+                {
+                    question: "קרן אור פוגעת בזווית של 30° ביחס לאנך במעבר מאוויר (n=1.0) לזכוכית (n=1.5). מהי זווית השבירה?",
+                    options: [
+                        "19.5°",
+                        "30°",
+                        "45°",
+                        "60°"
+                    ],
+                    correctAnswer: 0
+                },
+                {
+                    question: "מתי מתרחשת החזרה פנימית מלאה?",
+                    options: [
+                        "כאשר האור עובר מתווך בעל מקדם שבירה נמוך לתווך בעל מקדם שבירה גבוה",
+                        "כאשר האור עובר מתווך בעל מקדם שבירה גבוה לתווך בעל מקדם שבירה נמוך בזווית הגדולה מהזווית הקריטית",
+                        "כאשר זווית הפגיעה היא 90°",
+                        "כאשר מקדמי השבירה של שני התווכים זהים"
+                    ],
+                    correctAnswer: 1
+                },
+                {
+                    question: "קרן אור עוברת ממים (n=1.33) לאוויר (n=1.0). מהי הזווית הקריטית להחזרה פנימית מלאה?",
+                    options: [
+                        "48.8°",
+                        "33.3°",
+                        "90°",
+                        "אין זווית קריטית במקרה זה"
+                    ],
+                    correctAnswer: 0
+                },
+                {
+                    question: "מהו היחס בין sin(θ₁) ל-sin(θ₂) בחוק סנל?",
+                    options: [
+                        "sin(θ₁)/sin(θ₂) = n₁/n₂",
+                        "sin(θ₁)/sin(θ₂) = n₂/n₁",
+                        "sin(θ₁)·sin(θ₂) = n₁·n₂",
+                        "sin(θ₁)+sin(θ₂) = n₁+n₂"
+                    ],
+                    correctAnswer: 1
+                },
+                {
+                    question: "אם מקדם השבירה של חומר מסוים הוא 2.0, מהי מהירות האור בחומר זה ביחס למהירות האור בריק?",
+                    options: [
+                        "פי 2 יותר מהירה",
+                        "פי 2 יותר איטית",
+                        "זהה למהירות האור בריק",
+                        "תלויה בזווית הפגיעה"
+                    ],
+                    correctAnswer: 1
+                },
+                {
+                    question: "מדוע יהלום נוצץ יותר מזכוכית רגילה?",
+                    options: [
+                        "כי מקדם השבירה של יהלום נמוך יותר",
+                        "כי מקדם השבירה של יהלום גבוה יותר, מה שגורם ליותר החזרות פנימיות מלאות",
+                        "כי יהלום שקוף יותר מזכוכית",
+                        "כי יהלום מחזיר את כל אורכי הגל באותה מידה"
+                    ],
+                    correctAnswer: 1
+                }
+            ];
+            
+            currentQuestion = 0;
+            score = 0;
+            showQuestion(currentQuestion);
+        }
+        
+        function showQuestion(index) {
+            const questionData = quizQuestions[index];
+            document.getElementById("question-text").textContent = `שאלה ${index + 1}: ${questionData.question}`;
+            document.getElementById("question-counter").textContent = `שאלה ${index + 1} מתוך ${quizQuestions.length}`;
+            
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+            
+            questionData.options.forEach((option, i) => {
+                const optionElement = document.createElement("div");
+                optionElement.className = "quiz-option";
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectAnswer(i);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            document.getElementById("feedback-container").classList.add("hidden");
+            document.getElementById("next-question").disabled = true;
+        }
+        
+        function selectAnswer(selectedIndex) {
+            const questionData = quizQuestions[currentQuestion];
+            const options = document.querySelectorAll(".quiz-option");
+            
+            // בטל אפשרות לבחור תשובה נוספת
+            options.forEach(option => {
+                option.onclick = null;
+            });
+            
+            // סמן את התשובה הנכונה והשגויה
+            if (selectedIndex === questionData.correctAnswer) {
+                options[selectedIndex].classList.add("correct");
+                document.getElementById("feedback-container").classList.remove("hidden");
+                document.getElementById("feedback-text").textContent = "נכון! כל הכבוד!";
+                document.getElementById("feedback-container").style.backgroundColor = "#D4EDDA";
+                score++;
+            } else {
+                options[selectedIndex].classList.add("incorrect");
+                options[questionData.correctAnswer].classList.add("correct");
+                document.getElementById("feedback-container").classList.remove("hidden");
+                document.getElementById("feedback-text").textContent = "לא נכון. התשובה הנכונה מסומנת בירוק.";
+                document.getElementById("feedback-container").style.backgroundColor = "#F8D7DA";
+            }
+            
+            document.getElementById("next-question").disabled = false;
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizQuestions.length) {
+                showQuestion(currentQuestion);
+            } else {
+                // סיום החידון
+                stopTimer();
+                const totalTime = getTotalTime();
+                const minutes = Math.floor(totalTime / 60);
+                const seconds = totalTime % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                document.getElementById("quiz-score").textContent = score;
+                document.getElementById("final-time").textContent = timeString;
+                document.getElementById("quiz-results").classList.remove("hidden");
+                
+                // שמור את התוצאות ב-Google Apps Script
+                saveToAppsScript(studentName, score, totalTime);
+            }
+        }
+        
+        function restartQuiz() {
+            // עצור טיימר אם עדיין רץ
+            stopTimer();
+            
+            // איפוס משתנים
+            currentQuestion = 0;
+            score = 0;
+            studentName = '';
+            quizStartTime = null;
+            
+            // הסתר תוצאות והצג עמוד פתיחה
+            document.getElementById("quiz-results").classList.add("hidden");
+            document.getElementById("quiz-container").classList.add("hidden");
+            document.getElementById("quiz-start-page").classList.remove("hidden");
+            
+            // נקה את שדה השם
+            document.getElementById("student-name").value = "";
+            document.getElementById("name-error").classList.add("hidden");
+        }
+        
+        // אתחול הדף
+        window.onload = function() {
+            drawStaticDiagram();
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94f17e7f65d77da4',t:'MTc0OTgxNjcyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
